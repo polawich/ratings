@@ -4,7 +4,7 @@ metadata:
   name: bookinfo-dev-ratings
   namespace: bookinfo-service 
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 8080
   selector:

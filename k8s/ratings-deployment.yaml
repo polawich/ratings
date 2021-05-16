@@ -34,7 +34,18 @@ spec:
             port: 8080
             scheme: HTTP
         env:
-        - name: SERVICE_VERSION
-          value: v1
+         - name: SERVICE_VERSION
+           value: v1
+         - name: SERVICE_VERSION
+           value: v2
+         - name: MONGO_DB_URL
+           value: mongodb://bookinfo-dev-ratings:27017/
+         - name: MONGO_DB_USERNAME
+           value: ratings
+         - name: MONGO_DB_PASSWORD
+           valueFrom:
+            secretKeyRef:
+              name: bookinfo-dev-ratings-mongodb-secret
+              key: mongodb-password
       imagePullSecrets:
       - name: registry-bookinfo
