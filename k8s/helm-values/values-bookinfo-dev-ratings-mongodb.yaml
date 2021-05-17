@@ -1,5 +1,5 @@
 image:
-  tag: "4.4.1-debian-10-r12"
+  tag: "4.4.6-debian-10-r5"
 auth:
   existingSecret: bookinfo-dev-ratings-mongodb-secret
   username: "ratings-dev"
