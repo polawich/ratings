@@ -1,9 +1,15 @@
 image:
-  tag: "4.4.6-debian-10-r5"
-auth:
-  existingSecret: bookinfo-dev-ratings-mongodb-secret
-  username: "ratings-dev"
-  database: "ratings-dev"
-persistence:
+  # tag: "4.2.4-debian-10-r0"
+  tag: "4.4.6-debian-10-r0"
+#architecture: standalone
+auth: 
+  enabled: true
+  rootPassword: "ratings-dev"
+  username: "ratingsdev"
+  #database: "ratingsdev"
+  password: "ratingsdev"
+  #existingSecret: bookinfo-dev-ratings-mongodb-secret
+volumePermissions:
   enabled: false
-initdbScriptsConfigMap: "bookinfo-dev-ratings-mongodb-initdb"
+#initdbScripts:
+#  initdbScriptsConfigMap: bookinfo-dev-ratings-mongodb-initdb

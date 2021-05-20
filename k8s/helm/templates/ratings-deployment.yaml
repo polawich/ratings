@@ -1,51 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bookinfo-dev-ratings
-  namespace: bookinfo-service 
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.ratings.namespace }}
   labels:
-    app: bookinfo-dev-ratings
+    app: {{ .Release.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.ratings.replicas }}
   selector:
     matchLabels:
-      app: bookinfo-dev-ratings
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: bookinfo-dev-ratings
+        app: {{ .Release.Name }}
     spec:
       containers:
-      - name: bookinfo-dev-ratings
-        image: registry.opsta.in.th/bookinfo/ratings:v1.0.1
+      - name: {{ .Release.Name }}
+        image: {{ .Values.ratings.image }}:{{ .Values.ratings.tag }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.ratings.port }}
           name: web-port
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /health
-            port: 8080
+            path: {{ .Values.ratings.healthCheckPath }}
+            port: {{ .Values.ratings.port }}
             scheme: HTTP
         readinessProbe:
           httpGet:
-            path: /health
-            port: 8080
+            path: {{ .Values.ratings.healthCheckPath }}
+            port: {{ .Values.ratings.port }}
             scheme: HTTP
-        env:
         # - name: SERVICE_VERSION
         #   value: v1
-         - name: SERVICE_VERSION
-           value: v1
-         - name: MONGO_DB_URL
-           value: mongodb://bookinfo-dev-ratings-mongodb:27017/ratings-dev
-         - name: MONGO_DB_USERNAME
-           value: ratings-dev
-         - name: MONGO_DB_PASSWORD
-           valueFrom:
-            secretKeyRef:
-              name: bookinfo-dev-ratings-mongodb-secret
-              key: mongodb-password
+#
       imagePullSecrets:
-      - name: registry-bookinfo
+      - name: {{ .Values.ratings.imagePullSecrets }}
