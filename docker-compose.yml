@@ -7,8 +7,8 @@ services:
     environment:
       SERVICE_VERSION: v2 #v1 work standalone without database
       MONGO_DB_URL: mongodb://ratings:polawich123@mongodb:27017/ratings
-      MONGO_DB_USERNAME: ratings
-      MONGO_DB_PASSWORD: polawich123
+      #MONGO_DB_USERNAME: ratings
+      #MONGO_DB_PASSWORD: polawich123
   mongodb:
     image: bitnami/mongodb:4.4.1-debian-10-r12
     volumes:

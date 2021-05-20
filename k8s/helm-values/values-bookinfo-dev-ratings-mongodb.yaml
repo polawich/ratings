@@ -6,10 +6,11 @@ image:
 #auth: 
 #  enabled: true
 auth: 
-  #enabled: true
-  existingSecret: bookinfo-dev-ratings-mongodb-secret
+  enabled: true
+  #existingSecret: bookinfo-dev-ratings-mongodb-secret
   username: ratingsdev
-  database: ratingsdev
+  database: ratings
+  password: ratingsdev
   #password: ratingsdev
   #rootPassword: "ratings-dev"
   #password: ratingsdev

@@ -45,7 +45,7 @@ if (process.env.SERVICE_VERSION === 'v-unhealthy') {
 /**
  * We default to using mongodb, if DB_TYPE is not set to mysql.
  */
-if (process.env.SERVICE_VERSION === 'v2') {
+if (process.env.SERVICE_VERSION === 'v2') 
   if (process.env.DB_TYPE === 'mysql') {
     var mysql = require('mysql')
     var hostName = process.env.MYSQL_DB_HOST

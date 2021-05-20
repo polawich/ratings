@@ -39,13 +39,15 @@ spec:
         - name: SERVICE_VERSION
           value: v2
         - name: MONGO_DB_URL
-          value: mongodb://mongodb:27017/ratingsdev
-        - name: MONGO_DB_USERNAME
-          value: ratingsdev
-        - name: MONGO_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: bookinfo-dev-ratings-mongodb-secret
-              key: mongodb-password
+          #value: mongodb://mongodb:27017/ratingsdev
+          value: mongodb://ratingsdev:ratingsdev@mongodb.bookinfo-service:27017/ratings
+       # - name: MONGO_DB_USERNAME
+       #   value: ratingsdev
+       # - name: MONGO_DB_PASSWORD
+       #   value: ratingsdev
+          #valueFrom:
+          #  secretKeyRef:
+          #    name: bookinfo-dev-ratings-mongodb-secret
+          #    key: mongodb-password
       imagePullSecrets:
       - name: registry-bookinfo
