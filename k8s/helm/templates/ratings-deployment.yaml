@@ -1,40 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
-  namespace: {{ .Values.ratings.namespace }}
+  name: bookinfo-dev-ratings
+  namespace: bookinfo-service 
   labels:
-    app: {{ .Release.Name }}
+    app: bookinfo-dev-ratings
 spec:
-  replicas: {{ .Values.ratings.replicas }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: bookinfo-dev-ratings
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: bookinfo-dev-ratings
     spec:
       containers:
-      - name: {{ .Release.Name }}
-        image: {{ .Values.ratings.image }}:{{ .Values.ratings.tag }}
+      - name: bookinfo-dev-ratings
+        image: registry.opsta.in.th/bookinfo/ratings:v1.0.1
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.ratings.port }}
+        - containerPort: 8080
           name: web-port
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: {{ .Values.ratings.healthCheckPath }}
-            port: {{ .Values.ratings.port }}
+            path: /health
+            port: 8080
             scheme: HTTP
         readinessProbe:
           httpGet:
-            path: {{ .Values.ratings.healthCheckPath }}
-            port: {{ .Values.ratings.port }}
+            path: /health
+            port: 8080
             scheme: HTTP
+        env:
         # - name: SERVICE_VERSION
         #   value: v1
-#
+        - name: SERVICE_VERSION
+          value: v2
+        - name: MONGO_DB_URL
+          #value: mongodb://mongodb:27017/ratingsdev
+          value: mongodb://ratingsdev:ratingsdev@mongodb.bookinfo-service:27017/ratings
+       # - name: MONGO_DB_USERNAME
+       #   value: ratingsdev
+       # - name: MONGO_DB_PASSWORD
+       #   value: ratingsdev
+          #valueFrom:
+          #  secretKeyRef:
+          #    name: bookinfo-dev-ratings-mongodb-secret
+          #    key: mongodb-password
       imagePullSecrets:
-      - name: {{ .Values.ratings.imagePullSecrets }}
+      - name: registry-bookinfo
