@@ -1,15 +1,31 @@
 image:
   # tag: "4.2.4-debian-10-r0"
-  tag: "4.4.6-debian-10-r0"
+  #tag: 4.4.4-debian-10-r5
+  tag: 4.4.6-debian-10-r0
 #architecture: standalone
+#auth: 
+#  enabled: true
 auth: 
-  enabled: true
-  rootPassword: "ratings-dev"
-  username: "ratingsdev"
-  #database: "ratingsdev"
-  password: "ratingsdev"
-  #existingSecret: bookinfo-dev-ratings-mongodb-secret
+  #enabled: true
+  existingSecret: bookinfo-dev-ratings-mongodb-secret
+  username: ratingsdev
+  database: ratingsdev
+  #password: ratingsdev
+  #rootPassword: "ratings-dev"
+  #password: ratingsdev
+  #password: "ratingsdev"
 volumePermissions:
   enabled: false
-#initdbScripts:
-#  initdbScriptsConfigMap: bookinfo-dev-ratings-mongodb-initdb
+#existingConfigmap:
+ #initdbScripts: 
+ # data:
+ #  ratings_data.json: |
+ #    {"rating": 5}
+ #    {"rating": 4}
+ #  script.sh: |
+ #    #!/bin/sh
+ #    set -e
+ #    mongoimport --host localhost --username $MONGODB_USERNAME --password $MONGODB_PASSWORD \
+ #      --db $MONGODB_DATABASE --collection ratings --drop --file /docker-entrypoint-initdb.d/ratings_data.json
+
+initdbScriptsConfigMap: bookinfo-dev-ratings-mongodb-initdb
