@@ -8,3 +8,5 @@
     ```
 
 * Test with path `/ratings/1`
+
+Helm install It's Work!
