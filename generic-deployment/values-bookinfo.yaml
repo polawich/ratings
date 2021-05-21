@@ -11,19 +11,19 @@ image:
 imagePullSecrets:
   - registry-bookinfo
 
-nameOverride: deployment-bookinfo
-fullnameOverride: deployment-bookinfo
+nameOverride: bookinfo-dev-ratings
+fullnameOverride: bookinfo-dev-ratings
 #versionLabel: 0.2.1
 
 env: 
   - name: SERVICE_VERSION
     value: v2
   - name: MONGO_DB_URL
-    value: mongodb://mongodb:27017/ratings-dev
-  - name: MONGO_DB_USERNAME
-    value: ratings-dev
-  - name: MONGO_DB_PASSWORD
-    value: ratings-dev
+    value: mongodb://ratingsdev:ratingsdev@mongodb.bookinfo-service:27017/ratings
+  #- name: MONGO_DB_USERNAME
+  #  value: ratings-dev
+  #- name: MONGO_DB_PASSWORD
+  #  value: ratings-dev
   # - name: SAMPLE_SHARED_CONFIG
   #   configmap:
   #     name: shared-configmap
@@ -65,13 +65,13 @@ affinity: {}
 # Waiting time in seconds for shutting down pod after sent SIGTERM
 terminationGracePeriodSeconds: 30
 
-services: {}
-  # - type: NodePort
+services: 
+  - type: ClusterIP
   #   annotation: {}
-  #   ports:
-  #     - name: sample1-service-port
+    ports:
+       - name: bookinfo-port
   #       protocol: TCP
-  #       port: 80
+         port: 8080
   #       targetPort: 80
   #       nodePort: 32080
   #     - name: sample2-service-port
@@ -147,26 +147,28 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 50
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-  rules: []
-    # - host: a.example.com
-    #   http:
-    #     paths:
-    #       - path: /
-    #         backend:
-    #           - servicePort: 80
-    #       - path: /api
-    #         backend:
-    #           - servicePort: 8080
+  enabled: true
+  annotations: 
+     kubernetes.io/ingress.class: nginx
+     nginx.ingress.kubernetes.io/rewrite-target: /$2
+  rules: 
+     - host: polawich.opsta.in.th
+       http:
+         paths:
+           - path: /ratings(/|$)(.*)
+             backend:
+                serviceName: bookinfo-dev-ratings
+                servicePort: 8080
+           #- path: /ratings(/|$)(.*)
+#             backend:
+#           - servicePort: 8080
     # - host: b.example.com
     #   http:
     #     paths:
     #       - path: /
     #         backend:
     #           - servicePort: 80
-  tls: {}
+ # tls: {}
   #  - hosts:
   #    - a.example.com
   #    - b.example.com

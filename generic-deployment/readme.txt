@@ -1,0 +1,1 @@
+helm upgrade bookinfo-dev-ratings generic-deployment -f generic-deployment/values-bookinfo.yaml
