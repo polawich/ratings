@@ -4,14 +4,14 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-  name: bookinfo-dev-ratings
-  namespace: bookinfo-service 
+  name: {{ .Release.Name }}
+  namespace: {{ Values.ratings.namespace }}
 spec:
   rules:
-  - host: polawich.opsta.in.th
+  - host: {{ Values.ingress.host }}
     http:
       paths:
       - backend:
-          serviceName: bookinfo-dev-ratings
-          servicePort: 8080
-        path: /ratings(/|$)(.*)
+          serviceName: {{ Release.Name }}
+          servicePort: {{ Values.ratings.port }}
+        path: "/ratings(/|$)(.*)"

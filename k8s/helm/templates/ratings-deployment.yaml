@@ -1,46 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bookinfo-dev-ratings
-  namespace: bookinfo-service 
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.ratings.namespace }}
   labels:
-    app: bookinfo-dev-ratings
+    app: {{ .Release.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.ratings.replicas }}
   selector:
     matchLabels:
-      app: bookinfo-dev-ratings
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: bookinfo-dev-ratings
+        app: {{ .Release.Name }}
     spec:
       containers:
-      - name: bookinfo-dev-ratings
-        image: registry.opsta.in.th/bookinfo/ratings:v1.0.1
+      - name: {{ .Release.Name }}
+        image: {{ .Values.ratings.image }}:{{ .Values.ratings.tag }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.ratings.port }}
           name: web-port
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /health
-            port: 8080
+            path: "/health"
+            port: {{ .Values.ratings.port }}
             scheme: HTTP
         readinessProbe:
           httpGet:
-            path: /health
-            port: 8080
+            path: "/health"
+            port: {{ .Values.ratings.port }}
             scheme: HTTP
         env:
-        # - name: SERVICE_VERSION
-        #   value: v1
-        - name: SERVICE_VERSION
+        - name: SERVICE_VERSION #value v1 no dbs
           value: v2
         - name: MONGO_DB_URL
-          #value: mongodb://mongodb:27017/ratingsdev
           value: mongodb://ratingsdev:ratingsdev@mongodb.bookinfo-service:27017/ratings
+      imagePullSecrets:
+      - name: {{ .Values.ratings.imagePullSecrets }}
+       #   value: mongodb://mongodb:27017/ratingsdev
        # - name: MONGO_DB_USERNAME
        #   value: ratingsdev
        # - name: MONGO_DB_PASSWORD
@@ -49,5 +49,3 @@ spec:
           #  secretKeyRef:
           #    name: bookinfo-dev-ratings-mongodb-secret
           #    key: mongodb-password
-      imagePullSecrets:
-      - name: registry-bookinfo
